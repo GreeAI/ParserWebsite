@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Архив новостей - Страница {{ current_page }}</h2>
+</div>
+
+<div class="news-container">
+    {% for item in news %}
+    <article class="news-item">
+        <h2 class="news-title">
+            <a href="{{ item.link }}" target="_blank">{{ item.title }}</a>
+        </h2>
+        <div class="news-meta">
+            <span class="news-source">{{ item.source }}</span>
+            <span class="news-date">{{ item.date }}</span>
+        </div>
+        {% if item.content %}
+        <div class="news-content">
+            <p>{{ item.content[:200] }}{% if item.content|length > 200 %}...{% endif %}</p>
+        </div>
+        {% endif %}
+    </article>
+    {% else %}
+    <div class="no-news">
+        <p>На этой странице нет новостей.</p>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="pagination">
+    {% if current_page > 1 %}
+        <a href="{{ url_for('index', page=1) }}" class="pagination-first">« Первая</a>
+        <a href="{{ url_for('index', page=current_page-1) }}" class="pagination-prev">← Назад</a>
+    {% endif %}
+
+    <span class="pagination-info">Страница {{ current_page }} из {{ total_pages }}</span>
+
+    {% if current_page < total_pages %}
+        <a href="{{ url_for('index', page=current_page+1) }}" class="pagination-next">Вперед →</a>
+        <a href="{{ url_for('index', page=total_pages) }}" class="pagination-last">Последняя »</a>
+    {% endif %}
+</div>
+
+<div class="back-to-main">
+    <a href="{{ url_for('index') }}">← Вернуться к последним новостям</a>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="news-container">
+    {% for item in news %}
+    <article class="news-item">
+        <h2 class="news-title">
+            <a href="{{ item.link }}" target="_blank">{{ item.title }}</a>
+        </h2>
+        <div class="news-meta">
+            <span class="news-source">{{ item.source }}</span>
+            <span class="news-date">{{ item.date }}</span>
+        </div>
+    </article>
+    {% endfor %}
+</div>
+
+{% if total_pages > 1 %}
+<div class="pagination">
+    {% if current_page > 1 %}
+        <a href="{{ url_for('index', page=current_page-1) }}">← Назад</a>
+    {% endif %}
+
+    <span>Страница {{ current_page }} из {{ total_pages }}</span>
+
+    {% if current_page < total_pages %}
+        <a href="{{ url_for('index', page=current_page+1) }}">Вперед →</a>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}
