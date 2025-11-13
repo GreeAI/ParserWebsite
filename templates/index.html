@@ -11,6 +11,9 @@
             <span class="news-source">{{ item.source }}</span>
             <span class="news-date">{{ item.date }}</span>
         </div>
+        {% if item.content %}
+        <p class="news-content">{{ item.content }}</p>
+        {% endif %}
     </article>
     {% endfor %}
 </div>

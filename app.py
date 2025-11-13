@@ -6,15 +6,29 @@ import os
 
 from dataBase import NewsDatabase
 from parser.sibkray import SibkrayParser
-from parser.ngs import NGSSeleniumParser
+from parser.ngs_playwright import NGSPlaywrightParser
+from parser.nsknews import NSKParser
+from parser.nsk_kp import NSKKPParser
+from parser.sibfm import SibFMParser
+from parser.ks_online import KSParser
+from parser.vn import VNParser
+from parser.nsktv import NSKTVParser
+from parser.infopro import InfoProParser
 
 app = Flask(__name__)
 db = NewsDatabase()
 
 # Инициализация парсеров
 parsers = [
-    SibkrayParser(),
-    NGSSeleniumParser(),
+    # SibkrayParser(),
+    # NGSPlaywrightParser(),
+    # NSKParser(),
+    # NSKKPParser(),
+    # SibFMParser(),
+    # KSParser(),
+    # VNParser(),
+    # NSKTVParser(),
+    # InfoProParser(),
 ]
 
 
@@ -80,8 +94,6 @@ def api_parse():
     return jsonify({'new_news_added': new_count})
 
 
-# Добавьте этот маршрут в app.py после существующих маршрутов
-
 @app.route('/')
 def index():
     page = request.args.get('page', 1, type=int)
@@ -125,8 +137,9 @@ def news_page(page):
 
 
 if __name__ == '__main__':
-    # Первоначальный парсинг при запуске
-    parse_all_sites()
+    # Защита от двойного запуска при debug=True
+    from werkzeug.serving import is_running_from_reloader
+    if not is_running_from_reloader():
+        parse_all_sites()
 
-    # Запуск Flask приложения
     app.run(host='0.0.0.0', port=5000, debug=True)

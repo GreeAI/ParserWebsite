@@ -45,10 +45,8 @@ class NGSSeleniumParser(BaseParser):
             news_cards = driver.find_elements(By.CSS_SELECTOR, 'div.wrap_RL97A')
             print(f"Найдено карточек: {len(news_cards)}")
 
-            for i, card in enumerate(news_cards[:15]):  # Ограничиваем количество
+            for i, card in enumerate(news_cards[:15]):
                 try:
-                    print(f"Обрабатываем карточку {i + 1}...")
-
                     # Заголовок и ссылка
                     title_element = card.find_element(By.CSS_SELECTOR, 'a.header_RL97A')
                     title = title_element.text.strip()
@@ -77,7 +75,6 @@ class NGSSeleniumParser(BaseParser):
                     )
 
                     news_list.append(news_item)
-                    print(f"✓ Добавлена новость: {title[:60]}...")
 
                 except Exception as e:
                     print(f"✗ Ошибка при парсинге карточки {i + 1}: {e}")
@@ -88,7 +85,6 @@ class NGSSeleniumParser(BaseParser):
         finally:
             driver.quit()
 
-        print(f"Selenium парсер NGS завершил работу. Найдено новостей: {len(news_list)}")
         return news_list
 
     def _extract_date(self, card):
