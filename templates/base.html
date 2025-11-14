@@ -30,5 +30,22 @@
             <p class="last-update">Последнее обновление: {{ now.strftime('%H:%M:%S') if now else '' }}</p>
         </footer>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const links = document.querySelectorAll(".news-link");
+
+            links.forEach(link => {
+                const id = link.dataset.id;
+                if (localStorage.getItem(id)) {
+                    link.classList.add("visited");
+                }
+
+                link.addEventListener("click", () => {
+                    localStorage.setItem(id, "true");
+                    link.classList.add("visited");
+                });
+            });
+        });
+    </script>
 </body>
 </html>

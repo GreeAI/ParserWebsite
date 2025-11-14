@@ -18,7 +18,7 @@ class BaseParser:
     def get_page(self, url):
         """Загрузка страницы"""
         try:
-            response = self.session.get(url, timeout=10)
+            response = self.session.get(url, timeout=15)
             response.raise_for_status()
             return BeautifulSoup(response.text, 'lxml')
         except Exception as e:

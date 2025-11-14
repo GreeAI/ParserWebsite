@@ -5,7 +5,7 @@
     {% for item in news %}
     <article class="news-item">
         <h2 class="news-title">
-            <a href="{{ item.link }}" target="_blank">{{ item.title }}</a>
+            <a href="{{ item.link }}" class="news-link" data-id="{{ item.link }}" target="_blank">{{ item.title }}</a>
         </h2>
         <div class="news-meta">
             <span class="news-source">{{ item.source }}</span>

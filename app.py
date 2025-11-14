@@ -2,9 +2,8 @@ from flask import Flask, render_template, request, jsonify
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime
 import atexit
-import os
-
 from dataBase import NewsDatabase
+
 from parser.sibkray import SibkrayParser
 from parser.ngs_playwright import NGSPlaywrightParser
 from parser.nsknews import NSKParser
@@ -14,27 +13,39 @@ from parser.ks_online import KSParser
 from parser.vn import VNParser
 from parser.nsktv import NSKTVParser
 from parser.infopro import InfoProParser
+from parser.mkru import MKParser
+from parser.om import OMParser
+from parser.ndn import NDNParser
+from parser.nsk_aif import NSKAIFParser
+from parser.atas import ATASParser
 
 app = Flask(__name__)
 db = NewsDatabase()
 
 # Инициализация парсеров
 parsers = [
-    # SibkrayParser(),
-    # NGSPlaywrightParser(),
-    # NSKParser(),
-    # NSKKPParser(),
-    # SibFMParser(),
-    # KSParser(),
-    # VNParser(),
-    # NSKTVParser(),
-    # InfoProParser(),
+    SibkrayParser(),
+    NGSPlaywrightParser(),
+    NSKParser(),
+    NSKKPParser(),
+    SibFMParser(),
+    KSParser(),
+    VNParser(),
+    NSKTVParser(),
+    InfoProParser(),
+    MKParser(),
+    OMParser(),
+    NDNParser(),
+    NSKAIFParser(),
+    ATASParser()
 ]
 
 
 def parse_all_sites():
     """Функция парсинга всех сайтов"""
     print(f"[{datetime.now().strftime('%H:%M:%S')}] Запуск парсинга...")
+
+    db.delete_old_news(hours=24)
 
     new_news_count = 0
 
@@ -64,35 +75,7 @@ scheduler.add_job(func=parse_all_sites, trigger="interval", minutes=5)
 scheduler.start()
 
 # Остановка планировщика при выходе
-atexit.register(lambda: scheduler.shutdown())
-
-
-@app.route('/api/news')
-def api_news():
-    """API для получения новостей"""
-    page = request.args.get('page', 1, type=int)
-    count = request.args.get('count', 10, type=int)
-
-    news = db.get_latest_news(count=count, page=page)
-    news_data = [item.to_dict() for item in news]
-
-    return jsonify({
-        'news': news_data,
-        'current_page': page,
-        'total_pages': db.get_total_pages(per_page=count),
-        'total_news': db.get_news_count()
-    })
-
-
-@app.route('/api/parse')
-def api_parse():
-    """Ручной запуск парсинга"""
-    if request.args.get('key') != 'your_secret_key':  # Защита от случайных вызовов
-        return jsonify({'error': 'Unauthorized'}), 401
-
-    new_count = parse_all_sites()
-    return jsonify({'new_news_added': new_count})
-
+atexit.register(lambda: db.close())
 
 @app.route('/')
 def index():

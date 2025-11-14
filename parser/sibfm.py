@@ -1,5 +1,7 @@
 from .baseParser import BaseParser
 from models import NewsItem
+from datetime import datetime
+import pytz
 
 
 class SibFMParser(BaseParser):
@@ -26,7 +28,10 @@ class SibFMParser(BaseParser):
                 if title_elem and date_elem and link_elem:
                     title = title_elem.get_text(strip=True)
                     link = link_elem["href"]
-                    date = date_elem.get_text(strip=True)
+
+                    novosibirsk_tz = pytz.timezone("Asia/Novosibirsk")
+                    now = datetime.now(novosibirsk_tz)
+                    date = now.strftime("%d.%m.%Y %H:%M")
 
                     news_item = NewsItem(
                         title=title,

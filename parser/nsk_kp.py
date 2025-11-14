@@ -5,11 +5,13 @@ from .baseParser import BaseParser
 import logging
 import os
 import time
+from datetime import datetime
+import pytz
 
 
 class NSKKPParser(BaseParser):
     def __init__(self):
-        super().__init__("НКС КП")
+        super().__init__("НСК КП")
         self.url = "https://www.nsk.kp.ru/online/"
 
         # Настройка логов
@@ -76,8 +78,9 @@ class NSKKPParser(BaseParser):
                         subtitle_tag = card.select_one("p")
                         subtitle = subtitle_tag.get_text(strip=True) if subtitle_tag else ""
 
-                        date_tag = card.select_one("time")
-                        date = date_tag.get_text(strip=True) if date_tag else "Сегодня"
+                        novosibirsk_tz = pytz.timezone("Asia/Novosibirsk")
+                        now = datetime.now(novosibirsk_tz)
+                        date = now.strftime("%d.%m.%Y %H:%M")
 
                         news_item = NewsItem(
                             title=title,
