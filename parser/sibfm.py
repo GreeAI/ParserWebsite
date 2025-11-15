@@ -41,6 +41,9 @@ class SibFMParser(BaseParser):
                     )
                     news_list.append(news_item)
 
+                    if len(news_list) >= 10:
+                        break
+
             except Exception as e:
                 print(f"Ошибка парсинга новости: {e}")
                 continue

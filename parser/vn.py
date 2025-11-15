@@ -46,7 +46,6 @@ class VNParser(BaseParser):
                 )
                 news_list.append(news_item)
 
-                # Ограничение на количество новостей
                 if len(news_list) >= 10:
                     break
 
