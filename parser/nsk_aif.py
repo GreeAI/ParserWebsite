@@ -1,7 +1,9 @@
 from .baseParser import BaseParser
 from models import NewsItem
 from datetime import datetime
+from logs.logger import logging
 import pytz
+
 
 
 class NSKAIFParser(BaseParser):
@@ -10,6 +12,7 @@ class NSKAIFParser(BaseParser):
         self.url = "https://nsk.aif.ru/news"
 
     def parse(self):
+        logging.info("Запуск парсера Документы и Факты nskaif")
         soup = self.get_page(self.url)
         if not soup:
             return []
@@ -53,7 +56,7 @@ class NSKAIFParser(BaseParser):
                 news_list.append(news_item)
 
             except Exception as e:
-                print(f"Ошибка парсинга новости: {e}")
+                logging.warning(f"Ошибка парсинга новости: {e}")
                 continue
 
         return news_list

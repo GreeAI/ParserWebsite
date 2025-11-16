@@ -1,6 +1,6 @@
 from .baseParser import BaseParser
 from models import NewsItem
-
+from logs.logger import logging
 
 class NSKParser(BaseParser):
     def __init__(self):
@@ -9,6 +9,7 @@ class NSKParser(BaseParser):
 
 
     def parse(self):
+        logging.info("Запуск парсера НСК Новости")
         soup = self.get_page(self.url)
         if not soup:
             return []
@@ -45,7 +46,7 @@ class NSKParser(BaseParser):
                 news_list.append(news_item)
 
             except Exception as e:
-                print(f"Ошибка парсинга новости: {e}")
+                logging.warning(f"Ошибка парсинга новости: {e}")
                 continue
 
         return news_list

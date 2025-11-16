@@ -1,7 +1,9 @@
 from .baseParser import BaseParser
 from models import NewsItem
 from datetime import datetime
+
 import pytz
+from logs.logger import logging
 
 
 class NDNParser(BaseParser):
@@ -10,6 +12,7 @@ class NDNParser(BaseParser):
         self.url = "https://ndn.info/novosti/"
 
     def parse(self):
+        logging.info("Запуск парсера НДН...")
         soup = self.get_page(self.url)
         if not soup:
             return []
@@ -48,7 +51,7 @@ class NDNParser(BaseParser):
                 news_list.append(news_item)
 
             except Exception as e:
-                print(f"Ошибка парсинга новости: {e}")
+                logging.warning(f"Ошибка при обработке статьи в NDN: {e}")
                 continue
 
         return news_list

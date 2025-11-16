@@ -4,23 +4,12 @@ from models import NewsItem
 from .baseParser import BaseParser
 import time
 import logging
-import os
 
 
 class NGSPlaywrightParser(BaseParser):
     def __init__(self):
         super().__init__("НГС")
         self.url = "https://ngs.ru/text/"
-
-        # Логирование
-        log_dir = "logs"
-        os.makedirs(log_dir, exist_ok=True)
-        logging.basicConfig(
-            filename=os.path.join(log_dir, "ngs_playwright.log"),
-            level=logging.INFO,
-            format="%(asctime)s [%(levelname)s] %(message)s",
-            encoding="utf-8"
-        )
 
     def parse(self):
         logging.info("Запуск Playwright парсера для NGS...")
@@ -51,7 +40,6 @@ class NGSPlaywrightParser(BaseParser):
                 html = page.content()
                 soup = BeautifulSoup(html, "html.parser")
                 cards = soup.select("div.wrap_RL97A")
-                logging.info(f"Найдено карточек: {len(cards)}")
 
                 for i, card in enumerate(cards[:15]):
                     try:

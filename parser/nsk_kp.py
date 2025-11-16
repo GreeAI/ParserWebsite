@@ -2,8 +2,7 @@ from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
 from models import NewsItem
 from .baseParser import BaseParser
-import logging
-import os
+from logs.logger import logging
 import time
 from datetime import datetime
 import pytz
@@ -13,16 +12,6 @@ class NSKKPParser(BaseParser):
     def __init__(self):
         super().__init__("НСК КП")
         self.url = "https://www.nsk.kp.ru/online/"
-
-        # Настройка логов
-        log_dir = "logs"
-        os.makedirs(log_dir, exist_ok=True)
-        logging.basicConfig(
-            filename=os.path.join(log_dir, "kp_parser.log"),
-            level=logging.INFO,
-            format="%(asctime)s [%(levelname)s] %(message)s",
-            encoding="utf-8"
-        )
 
     def parse(self):
         logging.info("Запуск парсера КП Новосибирск...")

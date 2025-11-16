@@ -1,5 +1,6 @@
 from .baseParser import BaseParser
 from models import NewsItem
+from logs.logger import logging
 
 
 class MKParser(BaseParser):
@@ -8,6 +9,7 @@ class MKParser(BaseParser):
         self.url = "https://novos.mk.ru/news/"
 
     def parse(self):
+        logging.info("Запуск парсера МК Ру")
         soup = self.get_page(self.url)
         if not soup:
             return []
@@ -45,8 +47,11 @@ class MKParser(BaseParser):
                         )
                         news_list.append(news_item)
 
+                        if len(news_list) >= 10:
+                            break
+
             except Exception as e:
-                print(f"Ошибка парсинга новости: {e}")
+                logging.warning(f"Ошибка парсинга новости: {e}")
                 continue
 
-        return news_list[:10]
+        return news_list

@@ -1,6 +1,8 @@
 from .baseParser import BaseParser
 from models import NewsItem
 from datetime import datetime
+from logs.logger import logging
+
 import pytz
 
 
@@ -10,6 +12,7 @@ class NSKTVParser(BaseParser):
         self.url = "https://www.nsktv.ru/news/"
 
     def parse(self):
+        logging.info("Запуск парсера НСК ТВ")
         soup = self.get_page(self.url)
         if not soup:
             return []
@@ -48,7 +51,7 @@ class NSKTVParser(BaseParser):
                         break
 
             except Exception as e:
-                print(f"Ошибка парсинга новости: {e}")
+                logging.warning(f"Ошибка парсинга новости: {e}")
                 continue
 
         return news_list

@@ -220,15 +220,14 @@ footer p {
         flex-direction: column;
         gap: 0.5rem;
     }
-    .news-link {
-        color: green;
-        text-decoration: none;
-        font-weight: 600;
-        transition: color 0.3s ease;
-    }
+}
+.news-link {
+    color: green;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
 
-    .news-link.visited {
-        color: blue;
-    }
-
+.news-link.visited {
+    color: blue;
 }

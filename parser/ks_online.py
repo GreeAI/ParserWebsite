@@ -1,5 +1,6 @@
 from .baseParser import BaseParser
 from models import NewsItem
+from logs.logger import logging
 
 
 class KSParser(BaseParser):
@@ -8,6 +9,7 @@ class KSParser(BaseParser):
         self.url = "https://ksonline.ru/"
 
     def parse(self):
+        logging.info("Запуск парсера КС Онлайн")
         soup = self.get_page(self.url)
         if not soup:
             return []
@@ -35,7 +37,7 @@ class KSParser(BaseParser):
                     news_list.append(news_item)
 
             except Exception as e:
-                print(f"Ошибка парсинга новости: {e}")
+                logging.warning(f"Ошибка парсинга новости: {e}")
                 continue
 
         return news_list
