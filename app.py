@@ -13,9 +13,9 @@ from dataBase import NewsDatabase
 
 # Парсеры
 from parser.sibkray import SibkrayParser
-from parser.ngs_playwright import NGSPlaywrightParser
+# from parser.ngs_playwright import NGSPlaywrightParser
 from parser.nsknews import NSKParser
-from parser.nsk_kp import NSKKPParser
+# from parser.nsk_kp import NSKKPParser
 from parser.sibfm import SibFMParser
 from parser.ks_online import KSParser
 from parser.vn import VNParser
@@ -34,9 +34,9 @@ ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
 db = NewsDatabase()
 
 parsers = [
-    SibkrayParser(), NGSPlaywrightParser(), NSKParser(), NSKKPParser(),
-    SibFMParser(), KSParser(), VNParser(), NSKTVParser(), InfoProParser(),
-    MKParser(), OMParser(), NDNParser(), NSKAIFParser(), ATASParser()
+    SibkrayParser(), NSKParser(), SibFMParser(), KSParser(),
+    VNParser(), NSKTVParser(), InfoProParser(), MKParser(),
+    OMParser(), NDNParser(), NSKAIFParser(), ATASParser()
 ]
 
 scheduler = BackgroundScheduler()
