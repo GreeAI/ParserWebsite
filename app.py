@@ -120,7 +120,6 @@ def parse_all_sites():
     logging.info(f"Итого добавлено новых новостей: {new_news_count}")
     return new_news_count
 
-if __name__ == '__main__':
-    if not is_running_from_reloader():
-        parse_all_sites()
-        start_scheduler()
+if current_process().name == "MainProcess" and not is_running_from_reloader():
+    parse_all_sites()
+    start_scheduler()
