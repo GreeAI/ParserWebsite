@@ -80,6 +80,8 @@ class NewsDatabase:
     def get_last_news_time(self):
         with self._connect() as conn:
             cursor = conn.cursor()
-            cursor.execute('SELECT MAX(created_at) FROM news')
+            cursor.execute('SELECT MAX(created_at) FROM NewsItem')
             row = cursor.fetchone()
-            return datetime.fromtimestamp(row[0]) if row and row[0] else None
+            if row and row[0]:
+                return datetime.fromtimestamp(int(row[0]))
+            return None
