@@ -75,3 +75,9 @@ class NewsDatabase:
             cursor = conn.cursor()
             cursor.execute('DELETE FROM NewsItem WHERE created_at < ?', (cutoff,))
             conn.commit()
+
+    def get_last_news_time(self):
+        with self._connect() as conn:
+            cursor = conn.cursor()
+            cursor.execute('SELECT MAX(created_at) FROM news')
+            return cursor.fetchone()[0]

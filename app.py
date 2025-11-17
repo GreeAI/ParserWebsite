@@ -1,52 +1,16 @@
-from flask import Flask, render_template, request, redirect, url_for, abort, make_response
-from apscheduler.schedulers.background import BackgroundScheduler
+from flask import Flask, render_template, request, redirect, url_for
 from datetime import datetime
 from functools import wraps
-import atexit
 import os
 from dotenv import load_dotenv
 from logs.logger import logging
-from multiprocessing import current_process
-from werkzeug.serving import is_running_from_reloader
-
 from dataBase import NewsDatabase
 
-# Парсеры
-from parser.sibkray import SibkrayParser
-# from parser.ngs_playwright import NGSPlaywrightParser
-from parser.nsknews import NSKParser
-# from parser.nsk_kp import NSKKPParser
-from parser.sibfm import SibFMParser
-from parser.ks_online import KSParser
-from parser.vn import VNParser
-from parser.nsktv import NSKTVParser
-from parser.infopro import InfoProParser
-from parser.mkru import MKParser
-from parser.om import OMParser
-from parser.ndn import NDNParser
-from parser.nsk_aif import NSKAIFParser
-from parser.atas import ATASParser
-
-# Инициализация
+# Инициализация Flask
 app = Flask(__name__)
 load_dotenv()
 ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
 db = NewsDatabase()
-
-parsers = [
-    SibkrayParser(), NSKParser(), SibFMParser(), KSParser(),
-    VNParser(), NSKTVParser(), InfoProParser(), MKParser(),
-    OMParser(), NDNParser(), NSKAIFParser(), ATASParser()
-]
-
-scheduler = BackgroundScheduler()
-
-def start_scheduler():
-    if current_process().name == "MainProcess" and not is_running_from_reloader():
-        scheduler.add_job(func=parse_all_sites, trigger="interval", minutes=5)
-        scheduler.start()
-        atexit.register(lambda: db.close())
-        logging.info("Планировщик запущен")
 
 # Авторизация по токену
 def token_required(f):
@@ -101,25 +65,5 @@ def news_page(page):
                            current_page=page,
                            total_pages=total_pages,
                            total_news=db.get_news_count(),
-                           now=datetime.now())
-
-def parse_all_sites():
-    logging.info(f"[{datetime.now().strftime('%H:%M:%S')}] Запуск парсинга...")
-    db.delete_old_news(hours=24)
-    new_news_count = 0
-
-    for parser in parsers:
-        try:
-            news_list = parser.parse()
-            added = sum(1 for news in news_list if db.add_news(news))
-            new_news_count += added
-            logging.info(f"✅ {parser.source_name}: {len(news_list)} найдено, {added} новых")
-        except Exception as e:
-            logging.warning(f"❌ Ошибка в парсере {parser.source_name}: {e}")
-
-    logging.info(f"Итого добавлено новых новостей: {new_news_count}")
-    return new_news_count
-
-if current_process().name == "MainProcess" and not is_running_from_reloader():
-    parse_all_sites()
-    start_scheduler()
+                           now=db.get_last_news_time()
+                           )

@@ -27,7 +27,10 @@
         <footer>
             <p>Обновляется автоматически каждые 5 минут</p>
             <p>Всего новостей в базе: {{ total_news }}</p>
-            <p class="last-update">Последнее обновление: {{ now.strftime('%H:%M:%S') if now else '' }}</p>
+            <p class="last-update">
+                Последнее обновление: {{ last_update.strftime('%H:%M:%S') if last_update else 'нет данных' }}
+            </p>
+
         </footer>
     </div>
     <script>
