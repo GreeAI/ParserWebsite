@@ -1,6 +1,7 @@
 import sqlite3
 import time
 from models import NewsItem
+from datetime import datetime
 
 
 class NewsDatabase:
@@ -80,4 +81,5 @@ class NewsDatabase:
         with self._connect() as conn:
             cursor = conn.cursor()
             cursor.execute('SELECT MAX(created_at) FROM news')
-            return cursor.fetchone()[0]
+            row = cursor.fetchone()
+            return datetime.fromtimestamp(row[0]) if row and row[0] else None

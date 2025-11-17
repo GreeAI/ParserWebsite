@@ -46,7 +46,8 @@ def index():
                            current_page=page,
                            total_pages=total_pages,
                            total_news=db.get_news_count(),
-                           now=datetime.now())
+                           now=db.get_last_news_time()
+                           )
 
 @app.route('/page/<int:page>')
 @token_required
