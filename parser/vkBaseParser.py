@@ -1,11 +1,11 @@
 import requests
 import os
-
+from config import VK_TOKEN
 
 class VkBaseParser:
     def __init__(self, source_name):
         self.source_name = source_name
-        self.access_token = os.getenv("VK_TOKEN")
+        self.access_token = VK_TOKEN
         self.v = '5.199'
         self.count = 3 # последние новости с группы
         self.filter = 'owner'
