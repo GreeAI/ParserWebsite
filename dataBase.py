@@ -1,7 +1,7 @@
 import sqlite3
 import time
 from models import NewsItem
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
 
 class NewsDatabase:
@@ -83,5 +83,6 @@ class NewsDatabase:
             cursor.execute('SELECT MAX(created_at) FROM NewsItem')
             row = cursor.fetchone()
             if row and row[0]:
-                return datetime.fromtimestamp(int(row[0]))
+                nsk_tz = timezone(timedelta(hours=7))
+                return datetime.fromtimestamp(int(row[0]), tz=nsk_tz)
             return None
