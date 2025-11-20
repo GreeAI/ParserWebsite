@@ -2,6 +2,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from datetime import datetime
 from logs.logger import logging
 from dataBase import NewsDatabase
+from config import VK_TOKEN
 
 # Парсеры
 from parser.sibkray import SibkrayParser
@@ -16,13 +17,18 @@ from parser.om import OMParser
 from parser.ndn import NDNParser
 from parser.nsk_aif import NSKAIFParser
 from parser.atas import ATASParser
+from parser.VK_ab_guardia import VKABGuardiaParser
+from parser.VK_nsk_tv import VKNSKTVParser
+from parser.VK_ots_gorsite import VKOtsGorSiteParser
+from parser.VK_Sudi_Nsk import VKSudiNskParser
+from parser.VK_precedent import VKPrecedentParser
 
 db = NewsDatabase()
 
 parsers = [
-    SibkrayParser(), NSKParser(), SibFMParser(), KSParser(),
-    VNParser(), NSKTVParser(), InfoProParser(), MKParser(),
-    OMParser(), NDNParser(), NSKAIFParser(), ATASParser()
+    SibkrayParser(), VKNSKTVParser(), NSKParser(), VKSudiNskParser(), SibFMParser(), KSParser(),
+    VNParser(), VKABGuardiaParser(), NSKTVParser(), InfoProParser(), MKParser(),
+    OMParser(), VKOtsGorSiteParser(), NDNParser(), VKPrecedentParser(), NSKAIFParser(), ATASParser()
 ]
 
 def parse_all_sites():

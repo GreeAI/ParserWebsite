@@ -2,14 +2,11 @@ from flask import Flask, render_template, request, redirect, url_for
 from datetime import datetime
 from functools import wraps
 import os
-from dotenv import load_dotenv
 from logs.logger import logging
 from dataBase import NewsDatabase
-
+from config import ACCESS_TOKEN
 # Инициализация Flask
 app = Flask(__name__)
-load_dotenv()
-ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
 db = NewsDatabase()
 
 # Авторизация по токену
