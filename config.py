@@ -5,3 +5,5 @@ load_dotenv()
 
 ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
 VK_TOKEN = os.getenv("VK_TOKEN")
+TG_ID = os.getenv("TG_ID")
+TG_HASH = os.getenv("TG_HASH")

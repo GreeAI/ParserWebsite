@@ -22,13 +22,14 @@ from parser.VK_nsk_tv import VKNSKTVParser
 from parser.VK_ots_gorsite import VKOtsGorSiteParser
 from parser.VK_Sudi_Nsk import VKSudiNskParser
 from parser.VK_precedent import VKPrecedentParser
+from parser.telegram_parser import TelegramParser
 
 db = NewsDatabase()
 
 parsers = [
     SibkrayParser(), VKNSKTVParser(), NSKParser(), VKSudiNskParser(), SibFMParser(), KSParser(),
-    VNParser(), VKABGuardiaParser(), NSKTVParser(), InfoProParser(), MKParser(),
-    OMParser(), VKOtsGorSiteParser(), NDNParser(), VKPrecedentParser(), NSKAIFParser(), ATASParser()
+    VNParser(), VKABGuardiaParser(), NSKTVParser(), InfoProParser(), MKParser(), ATASParser(),
+    OMParser(), VKOtsGorSiteParser(), NDNParser(), VKPrecedentParser(), NSKAIFParser(),TelegramParser()
 ]
 
 def parse_all_sites():

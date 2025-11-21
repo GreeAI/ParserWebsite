@@ -34,17 +34,15 @@ def login():
 @token_required
 def index():
     page = request.args.get('page', 1, type=int)
-    news = db.get_latest_news(count=10, page=page)
-    total_pages = db.get_total_pages(per_page=10)
+    news = db.get_latest_news(count=30, page=page)
+    total_pages = db.get_total_pages(per_page=30)
 
-    template = 'page.html' if page > 1 else 'index.html'
-    return render_template(template,
+    return render_template('page.html',
                            news=news,
                            current_page=page,
                            total_pages=total_pages,
                            total_news=db.get_news_count(),
-                           last_update=db.get_last_news_time()
-                           )
+                           now=datetime.now())
 
 @app.route('/page/<int:page>')
 @token_required
@@ -52,11 +50,11 @@ def news_page(page):
     if page < 1:
         page = 1
 
-    total_pages = db.get_total_pages(per_page=10)
+    total_pages = db.get_total_pages(per_page=30)
     if page > total_pages and total_pages > 0:
         page = total_pages
 
-    news = db.get_latest_news(count=10, page=page)
+    news = db.get_latest_news(count=30, page=page)
 
     return render_template('page.html',
                            news=news,

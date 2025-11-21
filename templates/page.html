@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="page-header">
-    <h2>Архив новостей - Страница {{ current_page }}</h2>
+    <h2>Страница {{ current_page }}</h2>
 </div>
 
 <div class="news-container">
@@ -10,9 +10,9 @@
     <article class="news-item">
         <h2 class="news-title">
             <a href="{{ item.link }}" class="news-link" data-id="{{ item.link }}" target="_blank">{{ item.title }}</a>
+            <span class="news-source">{{ item.source }}</span>
         </h2>
         <div class="news-meta">
-            <span class="news-source">{{ item.source }}</span>
             <span class="news-date">{{ item.date }}</span>
         </div>
         {% if item.content %}
@@ -28,19 +28,32 @@
     {% endfor %}
 </div>
 
-<div class="pagination">
-    {% if current_page > 1 %}
-        <a href="{{ url_for('index', page=1) }}" class="pagination-first">« Первая</a>
-        <a href="{{ url_for('index', page=current_page-1) }}" class="pagination-prev">← Назад</a>
-    {% endif %}
+<div class="pagination-bar">
+    <div class="pagination-left">
+        {% if current_page > 1 %}
+            <a href="{{ url_for('index', page=1) }}" class="pagination-first">« Первая</a>
+            <a href="{{ url_for('index', page=current_page-1) }}" class="pagination-prev">← Вперед</a>
+        {% endif %}
+    </div>
 
-    <span class="pagination-info">Страница {{ current_page }} из {{ total_pages }}</span>
+    <div class="pagination-center">
+        <span class="pagination-info">Страница {{ current_page }} из {{ total_pages }}</span>
+    </div>
 
-    {% if current_page < total_pages %}
-        <a href="{{ url_for('index', page=current_page+1) }}" class="pagination-next">Вперед →</a>
-        <a href="{{ url_for('index', page=total_pages) }}" class="pagination-last">Последняя »</a>
-    {% endif %}
+    <div class="pagination-right">
+        {% if current_page < total_pages %}
+            <a href="{{ url_for('index', page=current_page+1) }}" class="pagination-next">Назад →</a>
+            <a href="{{ url_for('index', page=total_pages) }}" class="pagination-last">Последняя »</a>
+        {% endif %}
+
+        <form action="{{ url_for('index') }}" method="get" class="pagination-form">
+            <input type="number" name="page" min="1" max="{{ total_pages }}" value="{{ current_page }}" placeholder="№">
+            <button type="submit">OK</button>
+        </form>
+    </div>
 </div>
+
+
 
 <div class="back-to-main">
     <a href="{{ url_for('index') }}">← Вернуться к последним новостям</a>

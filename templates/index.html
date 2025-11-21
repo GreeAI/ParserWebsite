@@ -21,13 +21,13 @@
 {% if total_pages > 1 %}
 <div class="pagination">
     {% if current_page > 1 %}
-        <a href="{{ url_for('index', page=current_page-1) }}">← Назад</a>
+        <a href="{{ url_for('index', page=current_page-1) }}">← Вперед</a>
     {% endif %}
 
     <span>Страница {{ current_page }} из {{ total_pages }}</span>
 
     {% if current_page < total_pages %}
-        <a href="{{ url_for('index', page=current_page+1) }}">Вперед →</a>
+        <a href="{{ url_for('index', page=current_page+1) }}">Назад →</a>
     {% endif %}
 </div>
 {% endif %}
