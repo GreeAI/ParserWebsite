@@ -49,10 +49,15 @@ class TelegramParser:
         news_list = []
         try:
             for message in client.iter_messages(channel, limit=self.limit):
-                if not message or not getattr(message, "text", None):
+                if not message:
                     continue
 
-                title = re.split(r"[.!?\n]", message.text.strip(), maxsplit=1)[0].strip()
+                # Берём текст из message.text или message.message
+                text = getattr(message, "text", None) or getattr(message, "message", None)
+                if not text or not text.strip():
+                    continue
+
+                title = re.split(r"[.!?\n]", text.strip(), maxsplit=1)[0].strip()
                 date = message.date.astimezone(novosibirsk_tz).strftime("%d.%m.%Y %H:%M")
                 link = f"https://t.me/{channel}/{message.id}"
 
