@@ -210,3 +210,4 @@ __marimo__/
 test/
 site.db
 .idea
+tg_parser_session.session
